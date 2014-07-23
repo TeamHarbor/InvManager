@@ -71,7 +71,7 @@ namespace Inventory
         }
 
         /// <summary> 
-        /// Sets the current name of the player.
+        /// Sets the current name of the player. ////This is a superficial change.
         /// </summary>
         bool SetName(params string[] input)
         {
