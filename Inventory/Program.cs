@@ -10,8 +10,7 @@ namespace Inventory
     {
         static Boolean quit = false;
         static string PlayerName = "Player";
-        static bool repeat = false;
-        static bool isMsg = true;
+        static bool msgFlag = true;
         static string consoleMsg = "Welcome! System is ready for user input.";
 
         static void Main(string[] args)
@@ -28,11 +27,11 @@ namespace Inventory
             while (!quit)
             {
                 //Print Console Message if any
-                if (isMsg)
+                if (msgFlag)
                 {
                     Console.Write(consoleMsg);
                     consoleMsg = "";
-                    isMsg = false;
+                    msgFlag = false;
                 }
 
                 //Idle; Prompt for next input
@@ -50,7 +49,7 @@ namespace Inventory
         void GlobalMessage(string msg)
         {
             consoleMsg += System.Environment.NewLine + msg;
-            isMsg = true;
+            msgFlag = true;
         }
 
         string Action(string command)
@@ -69,7 +68,7 @@ namespace Inventory
                 case("setname"):
                     if (SetName(input))
                         error = "Player name successfully set!";
-                    else if(!repeat)
+                    else
                         error = "ERROR: Player name could not be set, please check syntax.";
                     break;
                 case ("get"):
@@ -92,15 +91,15 @@ namespace Inventory
         }
 
         /// <summary> 
-        /// Sets the current name of the player./test
+        /// Sets the current name of the player.
         /// </summary>
         bool SetName(params string[] input)
         {
+            //Beginning of method labeled so it may be looped.
+            Start:
+
             string prompt = "";
             bool result = false;
-
-            //reset repeat to false
-            repeat = false;
 
             if (input.Length > 1)
             {
@@ -109,6 +108,7 @@ namespace Inventory
             }
             else
             {
+                Console.Write(System.Environment.NewLine);
                 Console.WriteLine("Please enter your name or type 'list' to see a list of names in use.");
                 Console.Write("Name:");
                 prompt = Console.ReadLine();
@@ -116,10 +116,8 @@ namespace Inventory
                 {
                     //TODO: print list of names in use
 
-                    //Go back to the beginning of the prompt.
-                    repeat = true;
-                    result = false;
-                    Action("setname");
+                    //Go back to the beginning of the method.
+                    goto Start;
                 }
                 else
                 {
