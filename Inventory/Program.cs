@@ -10,6 +10,9 @@ namespace Inventory
     {
         static Boolean quit = false;
         static string PlayerName = "Player";
+        static bool repeat = false;
+        static bool isMsg = true;
+        static string consoleMsg = "Welcome! System is ready for user input.";
 
         static void Main(string[] args)
         {
@@ -20,16 +23,34 @@ namespace Inventory
             //get player name
             p.Action("setname");
 
+            Console.Clear();
+
             while (!quit)
             {
+                //Print Console Message if any
+                if (isMsg)
+                {
+                    Console.Write(consoleMsg);
+                    consoleMsg = "";
+                    isMsg = false;
+                }
+
+                //Idle; Prompt for next input
                 Console.WriteLine();
                 Console.Write(PlayerName + "//>");
                 command = Console.ReadLine();
                 reply = p.Action(command);
+                Console.WriteLine();
                 Console.WriteLine(reply);
 
                 System.Threading.Thread.Sleep(1);
             }
+        }
+
+        void GlobalMessage(string msg)
+        {
+            consoleMsg += System.Environment.NewLine + msg;
+            isMsg = true;
         }
 
         string Action(string command)
@@ -48,14 +69,14 @@ namespace Inventory
                 case("setname"):
                     if (SetName(input))
                         error = "Player name successfully set!";
-                    else
-                        error = "ERROR: Player name could not be set.";
+                    else if(!repeat)
+                        error = "ERROR: Player name could not be set, please check syntax.";
                     break;
                 case ("get"):
                     if (Get(input))
                         error = "Item given to player";
                     else
-                        error = "ERROR: Command could not be completed, check syntax.";
+                        error = "ERROR: Command could not be completed, please check syntax.";
                     break;
                 case(""):
                     break;
@@ -78,6 +99,9 @@ namespace Inventory
             string prompt = "";
             bool result = false;
 
+            //reset repeat to false
+            repeat = false;
+
             if (input.Length > 1)
             {
                 PlayerName = input[1];
@@ -90,7 +114,11 @@ namespace Inventory
                 prompt = Console.ReadLine();
                 if (prompt == "list")
                 {
-                    //TODO: print list of names
+                    //TODO: print list of names in use
+
+                    //Go back to the beginning of the prompt.
+                    repeat = true;
+                    result = false;
                     Action("setname");
                 }
                 else
