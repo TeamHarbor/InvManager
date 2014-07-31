@@ -16,6 +16,7 @@ namespace Inventory
         static void Main(string[] args)
         {
             Program p = new Program();
+            string[] CommandDictionary = new[] {"test", "get", "give", "setname", "quit"};
             string command;
             string reply;
 
