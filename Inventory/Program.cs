@@ -11,6 +11,7 @@ namespace Inventory
         static Boolean quit = false;
         static string PlayerName = "Player";
         static bool msgFlag = true;
+        static string query = "";
         static string consoleMsg = "Welcome! System is ready for user input.";
 
         static void Main(string[] args)
@@ -27,6 +28,12 @@ namespace Inventory
 
             while (!quit)
             {
+                //Commit any outstanding queries
+                if (!query.Equals(""))
+                {
+
+                }
+
                 //Print Console Message if any
                 if (msgFlag)
                 {
@@ -46,6 +53,8 @@ namespace Inventory
                 System.Threading.Thread.Sleep(1);
             }
         }
+
+
 
         void GlobalMessage(string msg)
         {
